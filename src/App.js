@@ -14,9 +14,30 @@ class App extends Component {
     };
   }
 
+  closeMarkers = () => {
+    const markers = this.state.markers.map(marker => {
+      marker.isOpen = false;
+      return marker;
+    });
+    this.setState({markers: Object.assign(this.state.markers,markers)})
+  }
+
+  handleMarkerClick = (marker) => {
+    this.closeMarkers();
+    marker.isOpen = true;
+    this.setState({markers: Object.assign(this.state.markers,marker)})
+    const venue =this.state.venues.find(venue => venue.id = marker.id);
+
+    FourSquareAPI.venueDetails(marker.id).then(res => {
+      const newVenue = Object.assign(venue, res.response.venue);
+      this.setState({venues: Object.assign(this.state.venues, newVenue)});
+      console.log(newVenue);
+    })
+  }
+
   componentDidMount() {
     FourSquareAPI.search({
-      near: 'Cumberland,MD',
+      near: 'Morgantown,WV',
       query: 'Pizza',
       limit: 10
     }).then(results => {
@@ -27,7 +48,8 @@ class App extends Component {
          lat: venue.location.lat,
          lng: venue.location.lng,
          isOpen: false,
-         isShowing: true
+         isShowing: true,
+         id: venue.id
        };
      });
      this.setState({ markers, venues, center });
@@ -37,7 +59,8 @@ class App extends Component {
 
   render() {
     return (
-      <Map {...this.state}/>
+      <Map {...this.state}
+      handleMarkerClick={this.handleMarkerClick}/>
     );
   }
 }

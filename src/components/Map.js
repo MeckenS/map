@@ -10,11 +10,23 @@ const MyMapComponent = withScriptjs(
       center={props.center}
     >
       {props.markers &&
-        props.markers
-          .filter(marker => marker.isShowing)
-          .map((marker,idx) => (
-            <Marker key={idx} position={{ lat: marker.lat, lng: marker.lng }} />
-          ))}
+        props.markers.filter(marker => marker.isShowing).map((marker,idx) => {
+            const venueDetails = props.venues.find(venue => venue.id = marker.id);
+            return (
+              <Marker key={idx} position={{ lat: marker.lat, lng: marker.lng }} onClick={() => props.handleMarkerClick(marker)}>
+              {marker.isOpen && venueDetails.bestPhoto && (
+                <InfoWindow>
+                  <div>
+                    <img src={`${venueDetails.bestPhoto.prefix}200x200${venueDetails.bestPhoto.suffix}`}
+                    alt={"venue"}
+                    />
+                    <p>{venueDetails.name}</p>
+                  </div>
+                </InfoWindow>
+               )}
+              </Marker>
+            );
+          })}
     </GoogleMap>
   ))
 );
