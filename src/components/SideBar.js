@@ -40,6 +40,7 @@ export default class SideBar extends Component {
     return (
       <div className="sideBar">
         <input
+          aria-label={"Search"}
           type={"search"}
           id={"search"}
           placeholder={"Search for places"}

@@ -50,7 +50,7 @@ class App extends Component {
 
   componentDidMount() {
     FourSquareAPI.search({
-      near: 'Frostburg,MD',
+      near: 'Baltimore,MD',
       query: 'Pizza',
       limit: 10
     }).then(results => {

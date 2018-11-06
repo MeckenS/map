@@ -1,3 +1,4 @@
+/* global google */
 import React, { Component } from 'react';
 import { withScriptjs, withGoogleMap, GoogleMap, Marker, InfoWindow } from "react-google-maps"
 
@@ -10,19 +11,24 @@ const MyMapComponent = withScriptjs(
       center={props.center}
     >
       {props.markers &&
-        props.markers.filter(marker => marker.isShowing).map((marker,idx) => {
+        props.markers.filter(marker => marker.isShowing).map((marker,idx,arr) => {
           const venueDetails = props.venues.find(venue => venue.id === marker.id);
           return (
             <Marker
               key={idx}
               position={{ lat: marker.lat, lng: marker.lng }}
-              onClick={() => props.handleMarkerClick(marker)}
+              onClick={() => {
+                props.handleMarkerClick(marker);
+                console.log(marker);
+              }}
+              animation= {marker.isOpen && (google.maps.Animation.BOUNCE)}
             >
               {marker.isOpen && (
                 <InfoWindow>
                   <div>
                     <p><b>{venueDetails.name}</b></p>
-                    <p>{venueDetails.location.address}</p>
+                    <p><b>{venueDetails.location.address}</b></p>
+                    <p>Info provided by Foursquare</p>
                   </div>
                 </InfoWindow>
               )}
