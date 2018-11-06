@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
 import Map from './components/Map'
+import SideBar from'./components/SideBar';
 import FourSquareAPI from './API/'
+
+
+
 
 class App extends Component {
   constructor() {
@@ -26,18 +30,24 @@ class App extends Component {
     this.closeMarkers();
     marker.isOpen = true;
     this.setState({markers: Object.assign(this.state.markers,marker)})
-    const venue =this.state.venues.find(venue => venue.id = marker.id);
+    //const venue = this.state.venues.find(venue => venue.id === marker.id);
+    //console.log(venue);
 
-    FourSquareAPI.venueDetails(marker.id).then(res => {
-      const newVenue = Object.assign(venue, res.response.venue);
-      this.setState({venues: Object.assign(this.state.venues, newVenue)});
-      console.log(newVenue);
-    })
+    //FourSquareAPI.venueDetails(marker.id).then(res => {
+      //const newVenue = Object.assign(venue, res.response.venue);
+      //this.setState({venues: Object.assign(this.state.venues, newVenue)});
+      //console.log(newVenue);
+    //})
+  }
+
+  handleListItemClick = venue => {
+    const marker = this.state.markers.find( marker => marker.id === venue.id);
+    this.handleMarkerClick(marker)
   }
 
   componentDidMount() {
     FourSquareAPI.search({
-      near: 'Morgantown,WV',
+      near: 'Frostburg,MD',
       query: 'Pizza',
       limit: 10
     }).then(results => {
@@ -53,14 +63,16 @@ class App extends Component {
        };
      });
      this.setState({ markers, venues, center });
-     console.log(results);
+     //console.log(results);
     });
   }
 
   render() {
     return (
-      <Map {...this.state}
-      handleMarkerClick={this.handleMarkerClick}/>
+      <div className="App">
+        <SideBar {...this.state} handleListItemClick={this.handleListItemClick}/>
+        <Map {...this.state} handleMarkerClick={this.handleMarkerClick}/>
+      </div>
     );
   }
 }

@@ -11,22 +11,24 @@ const MyMapComponent = withScriptjs(
     >
       {props.markers &&
         props.markers.filter(marker => marker.isShowing).map((marker,idx) => {
-            const venueDetails = props.venues.find(venue => venue.id = marker.id);
-            return (
-              <Marker key={idx} position={{ lat: marker.lat, lng: marker.lng }} onClick={() => props.handleMarkerClick(marker)}>
-              {marker.isOpen && venueDetails.bestPhoto && (
+          const venueDetails = props.venues.find(venue => venue.id === marker.id);
+          return (
+            <Marker
+              key={idx}
+              position={{ lat: marker.lat, lng: marker.lng }}
+              onClick={() => props.handleMarkerClick(marker)}
+            >
+              {marker.isOpen && (
                 <InfoWindow>
                   <div>
-                    <img src={`${venueDetails.bestPhoto.prefix}200x200${venueDetails.bestPhoto.suffix}`}
-                    alt={"venue"}
-                    />
-                    <p>{venueDetails.name}</p>
+                    <p><b>{venueDetails.name}</b></p>
+                    <p>{venueDetails.location.address}</p>
                   </div>
                 </InfoWindow>
-               )}
-              </Marker>
-            );
-          })}
+              )}
+            </Marker>
+          );
+        })}
     </GoogleMap>
   ))
 );
@@ -39,7 +41,7 @@ export default class Map extends Component {
         {...this.props}
         googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyAWRgTBU_UaiG3IqOPQwIQNBWtDhLIhMK0"
         loadingElement={<div style={{ height: `100%` }} />}
-        containerElement={<div style={{ height: `400px` }} />}
+        containerElement={<div style={{ height: `100%`, width: `75%` }} />}
         mapElement={<div style={{ height: `100%` }} />}
       />
     );
