@@ -61,10 +61,14 @@ class App extends Component {
        };
      });
      this.setState({ markers, venues, center });
-       //error handler
+       //Fouresquare API error handler
     }).catch(function() {
         alert("Sorry, we are having trouble showing Baltimore's favorite pizza joints at the moment please try again later");
     });
+    //Google Maps API error handler
+    window.gm_authFailure = () => {
+      alert("Sorry, we are having trouble loading Google Maps at the moment please try again later");
+    };
   }
 
   render() {
