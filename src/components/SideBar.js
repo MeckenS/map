@@ -9,16 +9,19 @@ export default class SideBar extends Component {
       venues: []
     };
   }
+
+  //show venues in listview that match search query and hide venues that do not
   handleFilterVenues = () => {
     if(this.state.query.trim() !== "") {
       const venues = this.props.venues.filter(venue =>
         venue.name.toLowerCase().includes(this.state.query.toLowerCase())
       );
-      console.log(venues)
       return venues;
     }
     return this.props.venues;
   };
+
+  //show markers that match search query and hide markers that do not
   handleChange = e => {
     this.setState({ query: e.target.value });
 
@@ -34,13 +37,16 @@ export default class SideBar extends Component {
     }
     return marker;
     });
+    //update superState in App.js
     this.props.updatSuperState({ markers });
   };
+
   render() {
     return (
-      <div className="sideBar">
+      <section className="sideBar">
         <input
           aria-label={"Search"}
+          tabIndex="0"
           type={"search"}
           id={"search"}
           placeholder={"Search for places"}
@@ -51,7 +57,7 @@ export default class SideBar extends Component {
           venues={this.handleFilterVenues()}
           handleListItemClick={this.props.handleListItemClick}
         />
-      </div>
+      </section>
     )
   }
 }

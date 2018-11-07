@@ -5,8 +5,6 @@ import SideBar from'./components/SideBar';
 import FourSquareAPI from './API/'
 
 
-
-
 class App extends Component {
   constructor() {
     super();
@@ -21,6 +19,7 @@ class App extends Component {
     };
   }
 
+  //closes any open marker infowindow when another marker is clicked
   closeMarkers = () => {
     const markers = this.state.markers.map(marker => {
       marker.isOpen = false;
@@ -29,26 +28,22 @@ class App extends Component {
     this.setState({markers: Object.assign(this.state.markers,markers)})
   }
 
+  //sets marker.isOpen to true to display marker infowindow & marker animation
   handleMarkerClick = (marker) => {
     this.closeMarkers();
     marker.isOpen = true;
     this.setState({markers: Object.assign(this.state.markers,marker)})
-    //const venue = this.state.venues.find(venue => venue.id === marker.id);
-    //console.log(venue);
-
-    //FourSquareAPI.venueDetails(marker.id).then(res => {
-      //const newVenue = Object.assign(venue, res.response.venue);
-      //this.setState({venues: Object.assign(this.state.venues, newVenue)});
-      //console.log(newVenue);
-    //})
   }
 
+  //when list item is clicked the corresponding marker is set to marker.isOpen to display infow window & animation
   handleListItemClick = venue => {
     const marker = this.state.markers.find( marker => marker.id === venue.id);
     this.handleMarkerClick(marker)
   }
 
   componentDidMount() {
+    //fetch request to Fouresquare api using helper file, then map through response & use info to setState to display
+    //markers and center map
     FourSquareAPI.search({
       near: 'Baltimore,MD',
       query: 'Pizza',
@@ -66,7 +61,9 @@ class App extends Component {
        };
      });
      this.setState({ markers, venues, center });
-     //console.log(results);
+       //error handler
+    }).catch(function() {
+        alert("Sorry, we are having trouble showing Baltimore's favorite pizza joints at the moment please try again later");
     });
   }
 

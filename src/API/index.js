@@ -18,7 +18,7 @@ class Helper {
     }
     return Object.keys(urlPrams).map(key => `${key}=${urlPrams[key]}`).join('&');
   }
-
+  //uses above static functions and Prams from App.js to form a fetch request to the Foursquare API
   static simpleFetch(endPoint,method,urlPrams) {
     let requestInfo = {
       method,
@@ -31,13 +31,5 @@ class Helper {
 export default class FourSquareAPI {
   static search(urlPrams) {
     return Helper.simpleFetch('/venues/search', 'GET', urlPrams);
-  }
-
-  static venueDetails(VENUE_ID) {
-    return Helper.simpleFetch(`/venues/${VENUE_ID}`, 'GET');
-  }
-  
-  static venuePhotos(VENUE_ID) {
-    return Helper.simpleFetch(`/venues/${VENUE_ID}/photos`, 'GET');
   }
 }
